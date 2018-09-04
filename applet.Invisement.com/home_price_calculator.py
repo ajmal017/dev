@@ -1,5 +1,6 @@
 '''
-Web applet to calculate to buy or rent.
+
+Applet to calculate buy or rent .
 main input
 
 Building = 50k + sqfeed * 100
