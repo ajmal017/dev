@@ -66,17 +66,20 @@ def buy_or_rent (base_quantile=0.3):
 
     table = expected_home_price(table, 1)
     #table.query('fips == "06075"').tail()[["fips", "county", "date", "house price", "rent", "rent growth", "expected home price", "expected return"]]
-    table["expected return"] = (table['expected home price'] - table['house price'])/table['house price']
-    table.to_csv (config['map path']+"buy or rent.csv")
+    table["buy advantage"] = (table['expected home price'] - table['house price'])/table['house price']
+    table['expected investment annual return'] = table['buy advantage'] * (table['rate']+pmi_rate) + table['rate'] + pmi_rate
+    table.to_csv (config['map path']+"buy or rent.csv", index=False)
 
 def calculate_home_price (table):
     expected_price = (
-            table['rent'] + table['extra tax deduction'] * tax_rate
+            table['rent'] 
+            + table['extra tax deduction'] * tax_rate
+            - table['house price base']*depreciation_rate
         )/(
             table['rate']
             + pmi_rate
             + table['property tax rate']
-            + depreciation_rate
+            #+ depreciation_rate
             - table['rent growth']
         )
     return expected_price
@@ -95,10 +98,11 @@ def expected_home_price (table, a=1):
     table['expected home price'] = calculate_home_price(table)
     return table
 
-#t['over priced'] = t['expected home price'] < t['house price']
-#t['over priced'].describe()
+
 
 ## to-do:
 # 1- visualization on us map
 # 2- calculate rate of return
 # 3- optimal quantile to fit data and minimize loss
+buy_or_rent(0.1)
+a = pd.read_csv(config['map path']+"buy or rent.csv")

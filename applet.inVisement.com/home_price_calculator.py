@@ -12,13 +12,13 @@ zillow = {
         },
         "datasets": {
                 "rent": {
-                        "source": "County/County_Zri_AllHomes.csv",
+                        "source": "County/County_Zri_SingleFamilyResidenceRental.csv",
                         "frequency": "M",
                         "index_cols": ['RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS'],
                         "col_names": ['county', 'state', 'metro', 'state fips', 'county fips', 'date', 'rent']
                 },
                 "house price": {
-                        "source": "County/County_Zhvi_AllHomes.csv",
+                        "source": "County/County_Zhvi_SingleFamilyResidence.csv",
                         "frequency": "M",
                         "index_cols": ['RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS'],
                         "col_names": ['county', 'state', 'metro', 'state fips', 'county fips', 'date', 'house price']
