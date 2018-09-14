@@ -18,16 +18,17 @@ import datetime, pandas as pd, numpy as np
 
 pmi_rate = 0.01 # private mortgage insurance rate
 tax_rate = 0.30 # federal tax bracket rate
-depreciation_rate = 0.01 # home depreciation rate for base home
+depreciation_rate = 0.03 # home depreciation rate for base home
 standard_tax_deduction = 24000 
 max_mortgage_credit = 1000000 # maximum allowance for tax deduction on mortgage
 
-def buy_or_rent (base_quantile=0.3):
-    price = pd.read_csv(config['map path']+"house price.csv", dtype=str)
+def housing_valuation (base_quantile=0.3):
+    price = pd.read_csv(config['map path']+"house price by county.csv", dtype=str)
     price['house price'] = pd.to_numeric(price['house price'])
     price['fips'] = price['state fips'].str.zfill(2) + price['county fips'].str.zfill(3)
+    price = price.filter(['fips', 'state', 'county', 'date', 'house price'])
 
-    rent = pd.read_csv(config['map path']+"rent.csv", dtype=str)
+    rent = pd.read_csv(config['map path']+"rent by county.csv", dtype=str)
     rent['rent'] = pd.to_numeric(rent['rent']) * 12 # convert to annual
     rent['fips'] = rent['state fips'].str.zfill(2) + rent['county fips'].str.zfill(3)
     rent = rent.filter(["fips", "date", "rent"])
@@ -56,7 +57,7 @@ def buy_or_rent (base_quantile=0.3):
     property_tax['fips'] = property_tax['fips'].astype(str).str.zfill(5)
     #property_tax_by_zipcode = pd.merge(fips_to_zipcode, property_tax, on=["fips"]).drop_duplicates(subset=['zipcode']).set_index(['zipcode'])['property tax rate']
 
-    table = price.merge(rent, how="inner", on=["fips", "date"], suffixes=["", "2"]).sort_values("date").filter(["fips", "state", "county", "date", "rent", "house price"])
+    table = price.merge(rent, how="inner", on=["fips", "date"], suffixes=["", "2"]).sort_values("date")
     table['date'] = pd.to_datetime(table['date'])
     table = pd.merge_asof(table, average_growth, on="date", direction="backward")
     table = pd.merge_asof(table, rate, on="date", direction="backward")
@@ -64,11 +65,10 @@ def buy_or_rent (base_quantile=0.3):
     quantiles = table[["house price", "rent", "date"]].groupby(["date"]).quantile(base_quantile)
     table = table.join(quantiles, on="date", how="left", rsuffix=" base")
 
-    table = expected_home_price(table, 1)
-    #table.query('fips == "06075"').tail()[["fips", "county", "date", "house price", "rent", "rent growth", "expected home price", "expected return"]]
-    table["buy advantage"] = (table['expected home price'] - table['house price'])/table['house price']
-    table['expected investment annual return'] = table['buy advantage'] * (table['rate']+pmi_rate) + table['rate'] + pmi_rate
-    table.to_csv (config['map path']+"buy or rent.csv", index=False)
+    table = expected_home_price(table)
+    table["total return"] = (table['expected house price'] - table['house price'])/table['house price']
+    table['net annual return'] = table['total return'] * (table['rate']+pmi_rate)
+    return table
 
 def calculate_home_price (table):
     expected_price = (
@@ -95,14 +95,31 @@ def expected_home_price (table, a=1):
     table['extra tax deduction'][
         table['house price'] > max_mortgage_credit
     ] = max_mortgage_credit * table['rate'] - standard_tax_deduction
-    table['expected home price'] = calculate_home_price(table)
+    table['expected house price'] = calculate_home_price(table)
     return table
 
+def prune_and_save (housing_table):
+    housing_table.to_csv(config["map path"] + "housing valuation.csv", index=False)
+    name_change = {"fips": "FIPS", "state": "State", "county": "County", 
+        "house price": "Average House Price", "rent": "Average Rent", 
+        "property tax rate": "Property Tax Rate", "rent growth": "Expected Rent Growth",
+        "expected house price": "Economic Value of Average Home",
+        "total return": "Total Return",
+        "net annual return": "Net Annual Return"}
+    percentage_columns = ["property tax rate", "rent growth", "total return", "net annual return"]
+    housing_table[percentage_columns] = (housing_table[percentage_columns] * 100).round(1)
+    date = housing_table['date'].value_counts()
+    max_date = date[date > 1000].index.max()
+    return (housing_table
+        .query('date == @max_date') 
+        .filter(name_change.keys())
+        .rename(columns = name_change)
+        .to_csv(config["map path"] + "latest housing valuation.csv", index=False)
+    )
 
 
-## to-do:
-# 1- visualization on us map
-# 2- calculate rate of return
-# 3- optimal quantile to fit data and minimize loss
-buy_or_rent(0.1)
-a = pd.read_csv(config['map path']+"buy or rent.csv")
+housing_table = housing_valuation(0.1)
+prune_and_save (housing_table)
+#a = pd.read_csv(config['map path']+"buy or rent.csv")
+
+#table.query('fips == "06075"').tail()[["fips", "county", "date", "house price", "rent", "rent growth", "expected home price", "expected return"]]

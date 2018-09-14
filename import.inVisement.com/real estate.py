@@ -7,33 +7,55 @@ import pandas as pd, requests, zipfile, io
 
 zillow = {
         "data_source": {
-                #"source": "http://files.zillowstatic.com/research/public/Zip.zip", # for zipcode
-                'source': "http://files.zillowstatic.com/research/public/County.zip"
+                'zillow by county': "http://files.zillowstatic.com/research/public/County.zip",
+                'zillow by zipcode': "http://files.zillowstatic.com/research/public/Zip.zip",
+                'zillow by city': "http://files.zillowstatic.com/research/public/City.zip",
         },
         "datasets": {
-                "rent": {
-                        "source": "County/County_Zri_SingleFamilyResidenceRental.csv",
+                "rent by county": {
+                        "source": "County/County_Zri_AllHomes.csv",
                         "frequency": "M",
                         "index_cols": ['RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS'],
                         "col_names": ['county', 'state', 'metro', 'state fips', 'county fips', 'date', 'rent']
                 },
-                "house price": {
-                        "source": "County/County_Zhvi_SingleFamilyResidence.csv",
+'''
+                "house price by county": {
+                        "source": "County/County_Zhvi_AllHomes.csv",
                         "frequency": "M",
                         "index_cols": ['RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS'],
                         "col_names": ['county', 'state', 'metro', 'state fips', 'county fips', 'date', 'house price']
-                }
+                },
+                "priceToRent ratio by county": {
+                        "source": "County/County_PriceToRentRatio_AllHomes.csv",
+                        "frequency": "M",
+                        "index_cols": ['RegionName', 'State', 'Metro', 'StateCodeFIPS', 'MunicipalCodeFIPS'],
+                        "col_names": ['county', 'state', 'metro', 'state fips', 'county fips', 'date', 'price to rent']
+                },
+                "priceToRent ratio by zipcode": {
+                        "source": "Zip/Zip_PriceToRentRatio_AllHomes.csv",
+                        "frequency": "M",
+                        "index_cols": ['RegionName', 'City','State', 'Metro', 'CountyName'],
+                        "col_names": ['zipcode', 'city', 'state', 'metro', 'county', 'date', 'price to rent']
+                },
+'''
         },
         "housing table": {
                 #"location": config['map path'] + "housing.csv"
         }
 }
 
-def fetch ():
-        r = requests.get(zillow['data_source']['source'])
+def fetch_zip (url):
+        r = requests.get(url)
         r.raise_for_status()
         z = zipfile.ZipFile(io.BytesIO(r.content))
         z.extractall(config['archive path'])
+
+def fetch ():
+        for dataset, url in zillow['data_source'].items():
+                r = requests.get(url)
+                r.raise_for_status()
+                z = zipfile.ZipFile(io.BytesIO(r.content))
+                z.extractall(config['archive path'])
 
 def extract ():
         for indicator, vars in zillow['datasets'].items():
@@ -72,3 +94,4 @@ def extract_property_tax_by_fips ():
         tax_by_fips = tax_by_fips.dropna(subset=["property tax rate"])
         tax_by_fips.to_csv(config['map path']+"property tax by fips.csv", index = False)
 
+pass

@@ -1,10 +1,9 @@
 {
-
 "data path": "data.inVisement.com/",
 "map path": "data.inVisement.com/map indicators/",
 "macro path": "data.inVisement.com/macro indicators/",
-"archive path": "archive.inVisement.com/"
-
+"archive path": "archive.inVisement.com/",
+"chart path": "data.inVisement.com/chart/"
 }
 
 
