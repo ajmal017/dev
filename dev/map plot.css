@@ -1,0 +1,111 @@
+
+.d3-tip {
+  line-height: 1.5;
+  padding: .5em;
+  background: rgba(0, 0, 150, 0.7);
+  color: white;
+  border-radius: 1em;
+  text-align: center;
+  font-size: smaller;
+}
+
+.border-and-fill {
+    fill: rgb(255, 255, 250);
+    stroke: rgb(180, 180, 180);
+}
+
+.border {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 1;
+}
+
+#map {
+    position: relative;
+    background-color: rgb(245, 245, 255);
+    width: 100%;
+}
+
+#map-legend {
+    top: 3em;
+    right: 0em;
+    text-align: center;
+    font-size: small;
+}
+
+#map-legend > svg {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#map-title {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+#map > * {
+    position: absolute;
+}
+
+.legend-bar {
+  font-size: small;
+
+}
+
+/*
+
+
+#charts{
+  float: left;
+}
+
+.chart {
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.reset {
+  padding-left: 1em;
+  font-size: smaller;
+  color: blue;
+}
+
+.background.bar {
+  fill: #ccc;
+}
+
+.foreground.bar {
+  fill: steelblue;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.brush rect.extent {
+  fill: steelblue;
+  fill-opacity: .125;
+}
+
+.brush .resize path {
+  fill: #eee;
+  stroke: #666;
+}
+
+#chart path {
+  stroke: #fff;
+}
+
+#chart path.highlighted {
+  cursor: pointer;
+}
+
+
+*/
