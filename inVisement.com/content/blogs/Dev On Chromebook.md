@@ -8,20 +8,7 @@ card: '<img src="/images/vscode-chrome.png" width="100%">'
 
 ChromeOS is a modern approach to laptop: everything runs in a browser but it can host Android and Linux apps. 
 
-You can run Web apps (Dah!), Chrome apps and extensions, android apps (through google play), and (this is exciting) Linux apps (through hosted container). You do not need to do dirty hacks like turn on `developer` mode, install `crouton` or `termux`, or `dual boot` it with linux.
-
 Chromebooks are very secure, fast, beautiful, and functional. Mine is a Pixelbook and it is the best device I ever had. 
-
-## Turn on Linux (Beta)
-ChromeOS has a built-in solution by hosting a `container` in a `linux vm`.
-
-- Update your ChromeOS
-    - Simply restart your laptop to check and update its OS.
-- Switch to `dev` or `beta` channel (after september 2018, this step is not necessary).
-    - https://support.google.com/chromebook/answer/1086915
-- In Chrome browser address bar type [chrome://settings](chrome://settings), scroll down to Linux (Beta) and turn it on.
-
-For now, it is a `debian stretch` but in future you can install any `linux`.
 
 ## Open Terminal and test
 Hit Launcher (circle icon on bottom left of your desktop), search for  `terminal` and open it.
@@ -117,7 +104,7 @@ sudo apt-get update && sudo apt-get install google-cloud-sdk
 sudo apt-get install google-cloud-sdk-app-engine-python
 # you can install more components go to: https://cloud.google.com/sdk/docs/downloads-apt-get
 
-gcloud init --concole-only # follow instructions. 
+gcloud init # follow instructions. 
 ```
 
 ## Enjoy coding and share it
