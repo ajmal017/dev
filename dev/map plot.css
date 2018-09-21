@@ -1,4 +1,36 @@
 
+#map-legend {
+  display: flex;
+  flex-direction: row;
+  bottom: 0em;
+  right: 0em;
+  text-align: left;
+  font-size: small;
+}
+
+#map-legend > rect {
+color: white;
+width: 4em;
+height: 1em;
+}
+
+#map-title {
+width: 100%;
+text-align: center;
+font-weight: bold;
+font-size: small;
+}
+
+#map {
+  position: relative;
+  background-color: rgb(245, 245, 255);
+  width: 100%;
+}
+
+#map > * {
+  position: absolute;
+}
+
 .d3-tip {
   line-height: 1.5;
   padding: .5em;
@@ -20,38 +52,6 @@
     stroke-width: 1;
 }
 
-#map {
-    position: relative;
-    background-color: rgb(245, 245, 255);
-    width: 100%;
-}
-
-#map-legend {
-    top: 3em;
-    right: 0em;
-    text-align: center;
-    font-size: small;
-}
-
-#map-legend > svg {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-#map-title {
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-}
-
-#map > * {
-    position: absolute;
-}
-
-.legend-bar {
-  font-size: small;
-
-}
 
 /*
 

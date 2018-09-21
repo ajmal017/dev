@@ -5,8 +5,8 @@ const config = {
     name_col: 'County',
     y_col: 'Net Annual Return',
     quant: 'scaleQuantile',
-    colors: ['blue', "red"],
-    color_number: 7,
+    colors: ['red', "green"],
+    number_of_colors: 7,
     legend_div: "#map-legend",
     map_div: "#map",
     data_type: "",
@@ -14,18 +14,16 @@ const config = {
 }
 config.data_type = config.data_type || config.data_file.split('.').pop();
 
-/*
-var color = d3
-    .scale
-    .linear()
-    .domain([-1,-2,-3])
-    .range(config.colors)
+color = d3.scale.linear().domain(config['colors'].map((a,i) => i))
+  .interpolate(d3.interpolateHsl)
+  .range(config['colors']);
+
 colorscale = []
-for (i=-1; i <= config.colors.length; i=i-1/(config.color_number-1)) {
-    colorscale.push(color(i))
+for (var i = 0; i <= config['colors'].length-1; i = i + (config['colors'].length-1)/(config['number_of_colors']-1)) {
+    colorscale.push(color(i));
 }
-*/
-colorscale = ['rgb(155,0,0)', 'rgb(255,0, 0)', 'rgb(255,0, 155)', 'rgb(155,0, 255)', 'rgb(0,0, 255)', 'rgb(0,0, 155)']//, 'rgb(0, 0, 255)']
+
+//colorscale = ['rgb(155,0,0)', 'rgb(255,0, 0)', 'rgb(255,0, 155)', 'rgb(155,0, 255)', 'rgb(0,0, 255)', 'rgb(0,0, 155)']//, 'rgb(0, 0, 255)']
 
 var 
     geos = {} // I could not figure out how to make it const
@@ -113,29 +111,14 @@ function draw_boundries (svg, geo_data, geo_objects) {
 }
 
 function draw_legend (legend_div, values) {
-    bar_length = 40;
-    var legend = d3.select(legend_div)
-        .append("svg")
-        //.attr("width", bar_length*colorscale.length)
-        //.attr("height", "2em")
-        
-    for (var i = 0; i < colorscale.length; i++) { //for each color 
-        legend // add color bar
+    bar_width = 3; //in em
+    
+    var legend = d3.select(legend_div)        
+    for (var i = 0; i < colorscale.length; i++) { //for each color create a rect, color it, text it, style it 
+        legend
             .append("rect")
-            .attr("style", "display: block;")
-            //.attr("x", bar_length*i)
-            .attr("height", "1em")
-            .attr("width", bar_length+"px")
-            .attr("fill", colorscale[i])
-        /*
-        legend //add text
-            .append("text")
-            .attr("x", bar_length*i)
-            .attr("font-size", "small")
-            .attr("fill", "white")
-            .attr("y", "1em")
-            .text(d3.quantile(values, i/colorscale.length))
-        */
+            .attr("style", "background-color: " + colorscale[i])
+            .html(d3.quantile(values, i/colorscale.length))
     };
 }
 
