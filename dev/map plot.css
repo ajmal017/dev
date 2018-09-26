@@ -1,5 +1,5 @@
 
-#map-legend {
+.yap-map-legend {
   display: flex;
   flex-direction: row;
   bottom: 0em;
@@ -8,26 +8,26 @@
   font-size: small;
 }
 
-#map-legend > rect {
-color: white;
-width: 4em;
-height: 1em;
+.yap-map-legend > rect {
+  color: white;
+  width: 4em;
+  height: 1em;
 }
 
-#map-title {
-width: 100%;
-text-align: center;
-font-weight: bold;
-font-size: small;
+.yap-map-text {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: small;
 }
 
-#map {
+.yap-map {
   position: relative;
   background-color: rgb(245, 245, 255);
-  width: 100%;
+  padding: 2em;
 }
 
-#map > * {
+.yap-map > * {
   position: absolute;
 }
 
@@ -42,14 +42,14 @@ font-size: small;
 }
 
 .border-and-fill {
-    fill: rgb(255, 255, 250);
-    stroke: rgb(180, 180, 180);
+  fill: rgb(255, 255, 250);
+  stroke: rgb(180, 180, 180);
 }
 
 .border {
-    fill: none;
-    stroke: rgb(0, 0, 0);
-    stroke-width: 1;
+  fill: none;
+  stroke: rgb(0, 0, 0);
+  stroke-width: 1;
 }
 
 

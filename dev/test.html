@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="cssjson.js"></script>
+</head>
+<body>
+    <div> 
+        hello 
+    </div>
+    <script>
+        //var json = CSSJSON.toJSON(cssString);
+        fetch('test.json')
+            .then(res => res.json())
+            //.then(CSSJSON.toCSS)
+            .then(CSSJSON.toHEAD)
+            .then(console.log)
+        // To CSS
+        //var css = CSSJSON.toCSS(jsonObject);
+
+        // Appending to DOM (HTMLHeadElement)
+        // alias (global): createCSS(css);
+        // CSSJSON.toHEAD(json);
+        //CSSJSON.toHEAD(css); // returns HTMLStyleElement
+        fetch('test.css')
+            .then(res => res.text())
+            .then(CSSJSON.toJSON)
+            .then(console.log)
+    </script>
+</body>
+
+
+</html>

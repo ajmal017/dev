@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+        <button class="readmorebtn">Read more</button><span class="more" style="display:none">Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Curabitur blandit tempus porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Etiam porta sem malesuada magna mollis euismod.
+        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+        </span>
+    </div>
+    <script>
+        const moreText = "Read more";
+        const lessText = "Read less";
+        const moreButton = $(".readmorebtn");
+        moreButton.click(function() {
+            const $this = $(this);
+            $this.text($this.text() == moreText ? lessText : moreText).next(".more").slideToggle("fast");
+        });
+    </script>
+</body>
+
+</html>
